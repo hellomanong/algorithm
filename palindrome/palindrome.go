@@ -2,7 +2,6 @@ package palindrome
 
 //字符串回文串
 func isPalindrome(str string) bool {
-
 	rs := []rune(str)
 
 	rs2 := make([]rune, 0)
@@ -13,6 +12,45 @@ func isPalindrome(str string) bool {
 	str2 := string(rs2)
 
 	return str == str2
+}
+
+//最长回文字串，中心点扩展方法
+func longestPalindrome(str string) string {
+	if len(str) < 2 {
+		return str
+	}
+
+	longestStr := str[:1]
+	for i := 1; i < len(str); i++ {
+		l := i - 1
+		r := i + 1
+
+		longestStr = longestHelper(str, l, r, longestStr)
+
+		l = i - 1
+		r = i
+
+		longestStr = longestHelper(str, l, r, longestStr)
+
+	}
+
+	return longestStr
+}
+
+func longestHelper(rs string, l, r int, longestStr string) string {
+	for l >= 0 && r < len(rs) {
+		if rs[l] == rs[r] {
+			if len(rs[l:r+1]) > len(longestStr) {
+				longestStr = rs[l : r+1]
+			}
+		} else {
+			break
+		}
+
+		l--
+		r++
+	}
+	return longestStr
 }
 
 //func longestPalindromeRune(str string) string {
@@ -54,40 +92,4 @@ func isPalindrome(str string) bool {
 //	return longestStr
 //}
 
-func longestPalindrome(str string) string {
-	if len(str) < 2 {
-		return str
-	}
 
-	longestStr := str[:1]
-	for i := 1; i < len(str); i++ {
-		l := i - 1
-		r := i + 1
-
-		longestStr = longestHelper(str, l, r, longestStr)
-
-		l = i - 1
-		r = i
-
-		longestStr = longestHelper(str, l, r, longestStr)
-
-	}
-
-	return longestStr
-}
-
-func longestHelper(rs string, l, r int, longestStr string) string {
-	for l >= 0 && r < len(rs) {
-		if rs[l] == rs[r] {
-			if len(rs[l:r+1]) > len(longestStr) {
-				longestStr = rs[l : r+1]
-			}
-		} else {
-			break
-		}
-
-		l--
-		r++
-	}
-	return longestStr
-}
